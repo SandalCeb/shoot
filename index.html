@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.item{
+			height:100px;
+			width: 100px;
+			background:orange;
+			position: absolute;
+			top:0;
+			left:0;
+			
+		}
+	</style>
+</head>
+<body>
+	<button class="btn">Начать игру</button>
+	<h1>Очки:  <span class="score">0</span> из 10 </h1>
+	<h2>У тебя секунд: <span class="time">10</span>  </h2>
+	<!--
+		1. Рандомно появляются утки
+			top left + 
+			сама картинка уток тоже (с мишенью и без) 
+			setInterval + 
+		2. Нажатие на уток 
+			исчезание уток при нажатии + 
+			+ 1 балл за утку с мишенью  зеленый +1 +
+			-2 балла без мишени красный -2 + 
+			продумать, как сделать разные типы уток?  + 
+			показать очки пользователю + 
+		3. Время игровое
+			игра начинается по нажатию на кнопку + 
+			setTimeout один раз +
+			подсчет очков  +  
+			победа или проигрыш +
+	-->
+
+	<script type="text/javascript">
+		let h1_score = document.querySelector(".score");
+		let btn = document.querySelector(".btn");
+		let int1;
+		let int2;
+		let time=10;
+		let timeelem = document.querySelector(".time");
+
+		btn.onclick = function(){
+			int1=setInterval(createDuck, 500);
+			setTimeout(finish, 10000);
+			int2=setInterval(timer, 1000)
+		}
+		function timer(){
+			time = time-1 
+			timeelem.innerHTML=time
+		}
+		function getRandom(number){
+			let x = Math.random() * number;
+			let y = Math.round(x);
+			return y;
+		}
+
+		let tops = [200, 400, 600];
+		let colors = ["green", "red"];
+		let score = 0;
+		
+		function createDuck(){
+			let duck = document.createElement("div");
+			document.body.appendChild(duck);
+			duck.classList.add("item");	
+			duck.style.left = getRandom(1800) + "px";
+			duck.style.top = tops[getRandom(2)] + "px";
+			let color_number = getRandom(1);
+			duck.style.background = colors[color_number];
+			
+			duck.onclick = function(){
+				duck.style.display = "none"; 
+				if(color_number == 0) {
+					score = score + 1;
+					h1_score.innerHTML = score;
+				}else if(color_number == 1){
+					score = score - 2;
+					h1_score.innerHTML = score;
+				}
+				console.log(score);
+			}
+		}	
+
+		function finish(){
+			clearInterval(int1);
+			clearInterval(int2);
+			if(score >=10){
+				alert("победа");
+			}else if(score < 10){
+				alert("прогрыш");
+			}
+		}
+		
+	</script>
+</body>
+</html>
